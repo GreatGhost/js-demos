@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <img id="img" />
+  <script>
+    var img = document.getElementById( 'img' );
+	    var cas = document.createElement( 'canvas' );
+	    var ctx = cas.getContext( '2d' );
+ 
+	    cas.width = 100, cas.height = 100;
+	    ctx.fillStyle = 'pink';
+	    ctx.fillRect( 0, 0, 100, 100 );
+ 
+	    // 把画布的内容转换为base64编码格式的图片
+	    var data = cas.toDataURL( 'image/png', 1 );  //1表示质量(无损压缩)
+ 
+	    img.src = data;
+ 
+        // 把画布的内容转换为base64编码格式的图片
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        button{
+            font-size:32px;
+        }
+    </style>
+</head>
+<body>
+    <button id="btn">测试按钮</button>
+    <div id="text">fasfdasf</div>
+    <button onclick="doBuff()">打印内容</button>
+    <button onclick="deleteBtn()">删除按钮</button>
+    <script>
+        // 参考文献
+        // https://juejin.cn/post/6844903833387155464
+        // 垃圾回收机制
+        // 1.找出不在使用的变量，释放它占用的内存
+        // 2.这个过程不是实时的，它在一定周期内实行 
+        var a='浪里行走';
+        var b='前端工匠';
+        a=b;
+
+        // 垃圾回收方法 1.引用计数 2.标记清除
+        // 标记清除流程：a.变量进入执行环境，标记标量 “进入环境”； b.变量离开环境，标记 变量“离开环境”
+
+        // 例子
+        var m=5,n=10;
+        add(m,n); // a,b,c进入环境
+        console.log(n)// a,b,c离开环境,等待垃圾回收
+        function add(a,b,c){
+           a++;
+           c=a+b;
+           return c;
+        }
+
+        // 三、哪些情况会内存泄漏
+
+        // 1.意外的全局变量
+        function sayName(){
+            // 下面的就是意外的全局变量,采用 'use strict'可以避免这种情况的发生
+            // fdsfasfa='fsadfsafad';
+            // this.variable='fasfsdf';
+        }
+        // 2.被遗忘的定时器、或回调函数
+        // 3.闭包
+        // 4.没有清楚DOM节点的引用
+
+            function bindEvent(){
+                var obj=document.createElement('div');
+                obj.innerHTML='有闭包的div';
+                document.body.appendChild(obj)
+                obj.onclick=function(){
+                    console.log('形成了闭包')
+                }
+            }
+            bindEvent();
+            // 解决方案 1.在外部函数外，定义一个事件处理函数
+            // 解决方案2 obj=null；
+
+            function handleClick(){
+                console.log('我被点击了')
+            }
+            function bindEvent2(){
+                var obj=document.createElement('div');
+                obj.onclick=handleClick
+            }
+
+            // dom节点没有删除例子
+            var element={
+                button:document.getElementById('btn'),
+                txtDiv:document.getElementById('text')
+            }
+            function doBuff(){
+                console.log(element.button);
+                //element.button.click();
+                console.log(element.txtDiv.innerHTML)
+            }
+            function deleteBtn(){
+                document.body.removeChild(document.getElementById('btn'));
+            }
+            
+            // 内存泄漏的识别方法
+            // performance 点击录制
+            
+            // 内存优化
+            const arr=[12,3,4,5]
+            console.log(arr)
+            // arr=[];
+            arr.length=0;
+
+            // 对象尽量复用
+           
+            var address=['中关村','杭州','北京']
+            var result=[]
+            
+            for(let i=0;i<3;i++){
+                let mapVo={}
+                mapVo.name=address[i];
+                result.push(i)
+                mapVo=null;
+            }
+            // 循环内尽量不要定义函数表达式，尽量放在外面
+            console.log(result)
+    </script>
+</body>
+</html>

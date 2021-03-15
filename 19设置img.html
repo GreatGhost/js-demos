@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div,
+        body,
+        img {
+            padding: 0;
+            margin: 0;
+        }
+
+        .test-img {
+            /* width:300px; */
+            /* transform: scale(.6); */
+            /* width: 300px!important; */
+            /* width:300px; */
+            /* border:5px solid red; */
+            width: 500px !important;
+        }
+
+        .border {
+            border: 5px solid red;
+        }
+
+        .width-300 {
+            width: 300px !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 这道题基本pass  -->
+    <img id="img" class="test-img" style="display:inline-block;"
+        src="https://tva1.sinaimg.cn/large/008eGmZEgy1gnb9v2cdwqj31480p6tb9.jpg" />
+    <button onclick="addStyle()">添加</button>
+    <input type="button" id="b1" onclick="setWidth()" value="Change width to 300 px" />
+    <script>
+        function addStyle() {
+            console.log('测试')
+            var imgDom = document.getElementById('img')
+            // imgDom.style.width='500px;'
+            // imgDom.style.border="4px solid red;"
+            imgDom.className += (' border');
+            imgDom.className += (' width-300');
+
+            console.log(imgDom.style)
+        }
+
+        function setWidth() {
+            document.getElementById("b1").style.width = "300px";
+        }
+    </script>
+</body>
+
+</html>

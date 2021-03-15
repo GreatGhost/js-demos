@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 构造函数模式
+      // 利用prototype创建构造函数
+    //   function Car(model, price) {
+    //     this.model = model;
+    //     this.price = price;
+    //   }
+
+    //   Car.prototype.sayPrice = function () {
+    //     console.log(`${this.model}-${this.price}`);
+    //   };
+    //   var car = new Car("BMW", 2000);
+    //   car.sayPrice();
+
+        // function Car(model,price){
+
+        //     // 强制使用new 创建构造函数
+        //     if(!(this instanceof Car)){
+        //         return new Car(model,price)
+        //     }
+        //     this.model=model;
+        //     this.price=price;
+        // }
+        // Car.prototype.sayPrice=function(){
+        //     console.log(`${this.model}-${this.price}`)
+        // }
+        // var car=new Car('大众',2000)
+        // var tool=Car('自行车',100)
+        // console.log(typeof tool)
+        // car.sayPrice();
+        // 只能用new来创建实例吗，还有其它方法吗
+        // 第二种方法
+        //     function Car(model,price){
+        //         this.model=model;
+        //         this.price=price;
+        //         this.output=function(){
+        //             console.log(this)
+        //             console.log(this.model)
+        //         }
+        //     }
+        // var o=new Object();
+        // Car.call(o,'奥迪',3000);
+        // o.output()
+        
+
+        // 原始包装函数
+    </script>
+  </body>
+</html>

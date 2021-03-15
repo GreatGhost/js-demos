@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="debounceBtn">单击</button>
+    <!-- 扁平化 -->
+    <script>
+        // 多维数组转化一位数组 数据模板
+        var data = [1, [1, 2, 3, [1, 2, 4]]]
+
+        // 数组去重data 
+        var data2=[1,2,3,5,1]
+        // 手写方法类
+        class HandQuestion {
+            constructor(){
+
+            }
+            static print(msg){
+                console.log('结果:',msg)
+            }
+
+            // 思路：
+            // 1.遍历数组
+            // 2.判断是否是数组
+            // 3.是 递归 否直接添加
+            static handleOneArray(arr) {
+                let result = [];
+                for (let i = 0; i < arr.length; i++) {
+                    let item = arr[i];
+                    if (Array.isArray(item)) {
+                        result.push(...HandQuestion.handleOneArray(item))
+                    } else {
+                        result.push(item)
+                    }
+                }
+                return result;
+            }
+
+            // 数组去重
+            // 🌰：[1,2,3,4,1]=>[1,2,3,4]
+            // 思路：
+            // Set，数组indexOf,include,利用Map
+            static handleUniqueArray(data){
+                var result=new Set(data);
+                console.log([...result]);
+                return [...result];
+            }
+        }
+
+        //测试点1：
+        HandQuestion.handleOneArray(data);
+
+        // 测试点2：
+        HandQuestion.handleUniqueArray(data2);
+
+        // 手写Array的方法 包括filter reduce map forEach includes 
+
+        // 手写filter逻辑思路
+        // 1.健壮性校验 this、回调校验
+        // 2.赋值 this\长度len
+        // 3.遍历
+        // 4.判断callback返回值是否为true
+        // 备注 thisArg 是啥
+        Array.prototype.myFilter=function(callback,thisArg){
+            var result=[];
+            if(this==undefined){
+                throw new TypeError('类型错误');
+            }
+            if(typeof callback!='function'){
+                throw new TypeError(callback,'is not a function')
+            }
+            const o =Object(this);
+            const len =o.length;
+            for(let i=0;i<len;i++){
+                let item=o[i];
+                if(callback(item,i,o)){
+                    result.push(item);
+                }
+            }
+            return result;
+        }
+        console.log([1,2,41].myFilter((item)=>item>10))
+
+
+        // 手写map逻辑思路 map的使用  [1,2,34,5].map((item)=>{item*5})输出 [5,10,170,25];
+
+        // 逻辑思路 主要用到函数的call方法
+        //
+        
+        Array.prototype.myMap=function(callback,context){
+            var result=[];
+            const me=this;
+            const ctx=context?context:this;
+            if(this==undefined){
+                throw new TypeError('类型错误');
+            }
+            if(typeof callback!='function'){
+                throw new TypeError(callback,'is not a function')
+            }
+            
+            const o =Object(this);
+            const len =o.length;
+            for(let i=0;i<len;i++){
+                let item=o[i];
+                // if(callback(item,i,o)){
+                //     result.push(callback(item,i,o));
+                // }
+                result.push(callback.call(ctx,item,i,this))
+            }
+            return result;
+        }
+        
+        console.log([1,2,41].myMap((item)=>item*3),this)
+
+        // 手写遍历 forEach的使用 [1,2,34].forEach((item)=>{console.log(item)});
+
+        // 7.手写reduce
+        //8. 手写apply方法  使用 fn.apply(this,[1,2,34,5])
+        // 1.apply是在 Function.prototype上的
+        function sayHi(a){
+            console.log(this)
+            console.log(a);
+        }
+        sayHi.apply({name:'王菲'},[1])
+
+        // 手写apply逻辑思路
+
+        // 1.传值
+        // 
+
+        // 手写防抖函数
+       const debounce=function(fn,timeout=1000){
+        let timeId=null;
+        return function(arguments){
+            if(timeId){
+                clearTimeout(timeId);
+            }
+            timeId=setTimeout(()=>{
+                console.log('我是防抖',timeout)
+                fn.apply(this,arguments);
+            },timeout)
+        }
+            
+       }
+        const debounceBtn=document.querySelector('#debounceBtn')
+        debounceBtn.addEventListener('click',debounce(function(){
+            console.log('你好')
+        }))
+       console.log((function sayName(a,b,c){}).length) 
+
+       /// 节流
+       
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="container">fsad</div>
+
+    <script>
+        /// 建造者模式
+        /// 表象即回调，事务的处理，取决于回调函数
+        function getSingleDom(dom,callback){
+            console.log(dom)
+            callback(dom)
+        }
+        var container=document.querySelector('#container');
+        container.addEventListener('click',function(){
+            console.log(this)
+            getSingleDom(this,function(res){
+                console.log(res)
+                alert('获取成功')
+            })
+        },false)
+        
+    </script>
+</body>
+</html>

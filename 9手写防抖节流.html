@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="myBounce" >防抖单击</button>
+    <button id="myThrottle" >节流单击</button>
+
+    <script>    
+        window.onload=function(){
+          
+        var myBounce=document.getElementById('myBounce')
+        myBounce.addEventListener('click',bounce(sayDebounce))
+
+        // 节流概念：指定时间间隔内只会执行一次
+        // 应用场景 防止过快拖动滚动条，导致 JS 跟不上拖动频率，通过节流限制每秒触发监听的次数（固定时间固定频率） 拖动动画效果，出现抖动现象
+        //实现🌰
+
+       
+        var myThrottle=document.getElementById('myThrottle');
+        
+        myThrottle.addEventListener('click',throttle(sayThrottle));
+        }
+
+          //概念：防抖的概念 在短时间内，多次触发只执行一次
+        //应用场景： 防止频繁提交表单、滚动下拉、异步请求（重要）
+        //实现🌰
+        // 🌰
+        function bounce(fn){
+            var timer=null;
+            return function(){
+                clearTimeout(timer)
+                timer=setTimeout(()=>{
+                fn.call(this,arguments)
+            },1000)
+            }
+            
+        }
+        function sayDebounce(){
+            console.log(this)
+            console.log('防抖单击')
+        }
+        function throttle(fn){
+           
+            var canRun=true;
+            return function(){
+                if(!canRun)return
+                // 将canRun 设置为false,防止事件执行之前再次执行
+                canRun=false;
+                setTimeout(()=>{
+                    fn.call(this,arguments)
+                    //时间执行完毕，开关重新打开
+                    canRun=true;
+                },1000)
+            }
+        }
+        function sayThrottle(a){
+            console.log('节流')
+            console.log(a)
+        }  
+        
+        // 思考题 防抖+节流 🌰
+        // 理清思路
+        
+    </script>
+</body>
+</html>

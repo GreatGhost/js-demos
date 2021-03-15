@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // ES6知识点 Reflect
+        // 第一个知识点： Object的一些属性搬到Reflect上
+        var obj={}
+        Reflect.defineProperty(obj,'name',{
+            get(){
+                return '松江'
+            },
+            set(newValue){
+                console.log('我更新了')
+                return newValue
+            }
+        })
+        
+        // 指向同一个指针
+            console.log(obj.name)
+            obj.name='王菲'
+            console.log(obj)
+        // 2.知识点: in delete 方法由Reflect.has Reflect.deleteProperty替代
+        console.log('name' in obj)
+        console.log(Reflect.has(obj,'name'))
+
+        /// 3.知识点 Reflect.set(target,name,value,receiver);设置对象属性赋值
+    </script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="updateData()">更新数据</button>
+    <script>
+
+        function updateData(){
+            console.log('测试')
+            data.name='松江'
+            console
+        }
+        // Object.defineProperty(obj,key,{set:,get:})
+        // 无法监听数组所以，需要处理
+        // 实现方式： 1.获取Array.prototype 2.深拷贝一个3.遍历
+
+        const oldArrayPrototype=Array.prototype;
+        const arrProto=Object.create(oldArrayPrototype);
+        ['pop','push','unshift','shift','splice'].forEach((methodName)=>{
+            (arrProto[methodName] = function() {
+       updateView();
+       oldAddrayProperty[methodName].call(this, ...arguments);
+     })
+        })
+           
+
+        /// 观察者函数
+        /// 第一步：判断变量是否是对象 第二步 判断对象是否是数组 第三部 遍历对象执行defineReactive(target,key,target[key])方法
+        function observer(target){
+            if(target===null ||typeof target!='object'){
+                return target
+            }
+            if(Array.isArray(target)){
+                target.__proto__=arrProto;
+            }
+            for(key in target){
+                defineReactive(target,key,target[key])
+            }
+        }
+
+        function updateView(){
+            console.log('我更新了');
+            console.log(data)
+        }
+
+        /// 函数defineReactive
+
+        /// 步骤 一、深度监听 二、执行Object.defineProperty(target,key,{})
+
+        function defineReactive(target,key,value){
+            // 深度监听
+            observer(value)
+
+            Object.defineProperty(target,key,{
+                get(){
+                    return value
+                },
+                set(newValue){
+                    // 如果数据发生变化
+                    observer(value);
+                    
+                    if(newValue!=value){
+                        value = newValue;
+                        updateView() 
+                    }  
+                }
+            })
+        }
+
+        var data={
+            name:'王菲',
+            info:{
+                id:'fdafasf123412'
+            },
+            list:[123,43,4]
+        }
+        observer(data)
+       
+        console.log(data)
+        
+    </script>
+</body>
+</html>

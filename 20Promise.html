@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // Promise链式调用
+        Promise.resolve('杭州').then(res=>{
+            console.log(res)
+            // Promise.reject('垃圾')
+            // throw new Error('错误日志');
+            
+            return '西湖';
+        }).then(res=>{
+            console.log(res)
+        }).catch(err=>{
+            console.log(err)
+        });
+    </script>
+</body>
+</html>

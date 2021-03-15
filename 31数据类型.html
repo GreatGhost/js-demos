@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 基本类型，也是原始类型
+        console.log(''??'当前账户没有')
+
+        // 栈内存特点 1.存储大小固定 2.空间较小 3.直接操作它保存的值，操作效率较高 4.系统自动分配存储空间
+        // 堆内存特点 1.存储大小不定 2.空间较大 运行效率较低 3.无法直接操作它存储的变量，通过引用位置调取 4.通过代买分配空间
+
+        
+        // 值传递和引用传递 
+        // ECMAScript中函数参数的传递都是值传递 解释下：当参数是原始类型时候，参数拷贝的副本指向这个值本身；参数是引用类型，副本指向堆内存中的地址
+        // 测试 data1
+        var data=5;
+        var sex='男';
+        var info={}
+        function printData(data){
+            data=data;
+            sex='女'
+        }
+        function printVo(info){
+            info.name='松江';
+            info={
+                name:'王菲',
+                age:19
+            }
+        }
+        printData(10);
+        printVo(info);
+        console.log(data)
+        console.log(sex)
+        console.log(info)
+
+        // 测试下堆内存
+        // 测试 data2
+
+        var data2={
+            name:'王菲',
+            info:[
+                {
+                    id:'112345'
+                }
+            ]
+        };
+        // Object.assign({}) 浅拷贝
+        var data3=Object.assign({},data2);
+        console.log(data2===data3)
+        data3.info.push({id:'123414'})
+        console.log(data2);
+        data3.name='旅游'
+        console.log(data3)
+        var data4;
+        console.log(data4)  // 打印undefined 这个地方缺少值
+        //console.log(fsadfsfa) // 会报错 fsadfsfa is not defined
+
+        
+        // 类型转换
+    </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+        // 间接传递 函数，引用foo词法作用域的闭包
+        var fn;
+        function foo(){
+            var a=1;
+            function bar(){
+                console.log(a)
+            }
+            fn=bar;
+        }
+        foo();
+        fn();
+
+        
+    </script>
+</body>
+</html>

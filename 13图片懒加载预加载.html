@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    .img{
+      width:200px;
+      height:auto;
+      margin: 10px auto;
+      display:block;
+    }
+  </style>
+</head>
+<h1>js懒加载</h1>
+<div class="lazy-load-box">
+  <img src="" class="img" lazyload="true" data-original="http://pic.58pic.com/58pic/17/18/97/01U58PIC4Xr_1024.jpg">
+  <img src="" class="img" lazyload="true" data-original="http://pic.58pic.com/58pic/17/18/97/01U58PIC4Xr_1024.jpg">
+  <img src="" class="img" lazyload="true" data-original="http://pic.58pic.com/58pic/17/18/97/01U58PIC4Xr_1024.jpg">
+  <img src="" class="img" lazyload="true" data-original="http://pic.58pic.com/58pic/17/18/97/01U58PIC4Xr_1024.jpg">
+  <img src="" class="img" lazyload="true" data-original="http://pic.58pic.com/58pic/17/18/97/01U58PIC4Xr_1024.jpg">
+  <img src="" class="img" lazyload="true" data-original="http://pic.58pic.com/58pic/17/18/97/01U58PIC4Xr_1024.jpg">
+
+  <img src="" class="img" lazyload="true" data-original="http://pic.58pic.com/58pic/17/18/97/01U58PIC4Xr_1024.jpg">
+
+  <img src="" class="img" lazyload="true" data-original="http://pic.58pic.com/58pic/17/18/97/01U58PIC4Xr_1024.jpg">
+
+  <img src="" class="img" lazyload="true" data-original="http://pic.58pic.com/58pic/17/18/97/01U58PIC4Xr_1024.jpg">
+
+  <img src="" class="img" lazyload="true" data-original="http://pic.58pic.com/58pic/17/18/97/01U58PIC4Xr_1024.jpg">
+
+</div>
+<body>
+  <script>
+    // 手写图片懒加载、预加载
+
+    // 图片懒加载
+
+       window.onload = function () {
+
+    //获取当前浏览器的视口高度
+
+    var viewHeight = document.documentElement.clientHeight;
+
+    //鼠标滚动回调
+
+    function lazyload() {
+
+        var img = document.getElementsByClassName('img'); //获取所有图片集合
+
+        //遍历图片集合
+
+        for (let item of img) {
+
+            //获取图片距视口顶部的距离
+
+            var imgHeight = item.getBoundingClientRect();
+
+            //判断当图片出现在视口160px时把地址放到src中，显示出图片
+
+            if (imgHeight.top < (viewHeight - 100)) {
+
+                item.src = 'https://tva1.sinaimg.cn/large/0081Kckwgy1gkl6jd6a9rj316q0u0x6p.jpg'
+
+            }
+
+        }
+
+    }
+
+    lazyload();    //页面加载时把当前视口中的图片加载进来
+
+    document.addEventListener('scroll', lazyload);
+
+}
+
+
+
+
+    
+  </script>
+
+</body>
+</html>

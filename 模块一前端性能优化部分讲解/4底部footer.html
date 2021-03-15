@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 底部元素固定底部 */
+        .container{
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: gray;
+        }
+        .main{
+            height: 1000px;
+            background-color: white;
+        }
+        .footer{
+            background-color: brown;
+            flex-shrink: 0;
+            height: 200px;
+            margin-top:auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main">1234124</div>
+        <div class="footer"></div>
+    </div>
+</body>
+</html>

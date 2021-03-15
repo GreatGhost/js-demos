@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .g-container{
+            width:100%;
+            display: grid;
+            grid-template-columns: repeat(3, 200px);
+            grid-template-rows: repeat(3, 200px);
+            gap: 20px;
+        }
+        .g-item:nth-child(2n){
+            background-color: aquamarine;
+        }
+        .g-item:nth-child(2n+1){
+            background-color: red;
+        }
+        .g-12-container{
+            display: grid;
+            grid-template-columns: repeat(12,1fr);
+            grid-template-rows: 100px;
+        }
+        .g-12-item{
+            background-color: blue;
+        }
+    </style>
+</head>
+<body>
+    <div class="g-container">
+        <div class="g-item"></div>
+        <div class="g-item"></div>
+        <div class="g-item"></div>
+        <div class="g-item"></div>
+        <div class="g-item"></div>
+        <div class="g-item"></div>
+        <div class="g-item"></div>
+        <div class="g-item"></div>
+        <div class="g-item"></div>
+    </div>
+
+    <div class="g-12-container">
+        <div class="g-12-item"></div>
+    </div>
+    <script>
+       
+    </script>
+</body>
+</html>

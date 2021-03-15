@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    .img{
+      width:200px;
+      height:auto;
+      margin: 10px auto;
+      display:block;
+    }
+  </style>
+</head>
+<h1>js预加载</h1>
+<div class="lazy-load-box">
+  <button class="previewImage" onclick="previewImage()">图片预加载</button>
+  <button class="btn" onclick="loadImage()">生成图片</button>
+</div>
+<body>
+  <script>
+    // 手写图片懒加载、预加载
+    // 图片使用之前，事先将图片缓存下来，等到页面需要的时候直接从换从读取，无需再次发送网络请求；从而加快网络加载速度
+     function previewImage(){
+       console.log('测试')
+       var image=new Image();
+       image.src='https://tva1.sinaimg.cn/large/008eGmZEgy1gn9591majnj30lg0a8wej.jpg';
+     }
+
+     function loadImage(){
+       var img=document.createElement('img');
+       img.src="https://tva1.sinaimg.cn/large/008eGmZEgy1gn9591majnj30lg0a8wej.jpg";
+       document.body.appendChild(img);
+     }
+
+     /// 图片预加载函数
+
+     function preLoadImages(list,index){
+       var image=new Image();
+       image.src=list[index];
+       image.onload=function(){
+         console.log('图片加载成功');
+         if(index<list.length-1){
+           index++;
+           preLoadImages(list,index)
+         }
+       }
+       image.onerror=function(){
+         console.log('图片加载失败')
+         if(index<list.length-1){
+           index++;
+           preLoadImages(list,index)
+         }
+       }
+     }
+     window.onload=function(){
+      const images=['https://tva1.sinaimg.cn/large/008eGmZEgy1gn9591majnj30lg0a8wej.jpg','https://tva1.sinaimg.cn/large/0081Kckwgy1gkl6jd6a9rj316q0u0xafds6p.png'];
+     preLoadImages(images,0)
+     }
+     
+ </script>
+
+</body>
+</html>

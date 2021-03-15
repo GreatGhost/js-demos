@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 单例模式
+        var mySingleMode=function(){
+            var name='王菲';
+            var sayName=function(){
+                console.log(name)
+            }
+
+            return {
+                init(){
+
+                },
+                singleSayName(){
+                    sayName();
+                },
+                name:name
+            }
+        }
+        var single=mySingleMode();
+        single.singleSayName();
+        console.log(single.name)
+        // 构造一个方法，只有使用的时候才初始化,只有在引用的时候
+
+        var Singleton=(function(){
+            var instantiated;
+            function init(){
+                return {
+                    publicMethod(){
+                        console.log('测试案例')
+                    },
+                    name:'掘金'
+                }
+            }
+
+            function getInstance(){
+                if(!instantiated){
+                    instantiated=init();
+                }
+                return instantiated
+            }
+            return {
+                getInstance
+            }
+        })();
+    Singleton.getInstance().publicMethod();
+
+        // 单利使用的应用场景
+        // 各种模式之间的通信协调
+
+        var EventBus=(function(){
+            // 实例构造函数
+            function Singleton(args){
+                var args=args||{}
+                this.name=args.name;
+                this.pointX=args.pointX||6;
+                this.pointY=args.y|| 10;
+            }
+
+            // 单利容器
+            var instance;
+
+
+            // 初始化实例
+            var _static={
+                name:'singleInstance',
+                getInstance(arg){
+                    if(!instance){
+                        instance=new Singleton(arg);
+                    }
+                        
+                    return instance;
+                }
+            }
+            return _static;
+        })();
+        var bus=EventBus.getInstance({pointX:100})
+        console.log(bus.pointY)
+
+        // 链式调用
+
+        class FormValidate{
+            constructor(val){
+                this.val=val;
+                this.msg='校验通过';
+                this.pass=true;
+            }
+
+            checkMobile(){
+                console.log(this)
+                var reg=/[1-9]{11}/ig;
+                if(!reg.test(this.val)){
+                    this.pass=true;
+                    this.msg='手机号码填写有误';
+                }
+                return this;
+            }
+            checkNumber(){
+                if(typeof this.val!=='number'){
+                    this.valid=false;
+                    this.msg='变量格式必须是数字';
+                }
+                return this;
+            }
+        }
+        const validate=new FormValidate(18841126869);
+        console.log(validate.checkMobile().pass)
+        console.log(validate.checkMobile().msg)
+
+        // 判断是否存在实例
+
+        function Universe(){
+            if(typeof Universe.instance==='object'){
+                return Universe.instance
+            }
+            this.name='王菲'
+            this.sex='女'
+            Universe.instance=this;
+        }
+
+        var u1=new Universe();
+        var u2=new Universe();
+
+        console.log(u1===u2)
+
+
+
+        /// 构造函数模式
+
+        
+    </script>
+</body>
+</html>

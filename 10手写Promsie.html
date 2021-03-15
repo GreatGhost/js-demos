@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 这段源码没有加链式调用
+      //同步Promise
+      const STATUS_PENDING = "pending";
+      const STATUS_FULFILLED = "fulfilled";
+      const STATUS_REJECTED = "rejected";
+
+      class MyPromise {
+        constructor(executor) {
+          //promise状态
+          this.status = STATUS_PENDING;
+          
+          this.value = "";
+          this.reason = "";
+        // 成功存放的数组
+        this.onResolvedCallbacks = [];
+            // 失败存放法数组
+        this.onRejectedCallbacks = [];
+          // 5.resolve
+          let resolve = (value) => {
+            if (this.status == STATUS_PENDING) {
+                this.status = STATUS_FULFILLED
+              this.value = value;
+              this.onResolvedCallbacks.forEach(fn=>fn())
+            }
+          };
+
+          //6.拒绝
+          let reject = (err) => {
+              if(this.status==STATUS_PENDING){
+                this.reason = err;
+                this.status=STATUS_REJECTED
+                this.onRejectedCallbacks.forEach(fn=>fn())
+              }
+           
+          };
+
+        // 7.执行生成器
+          try{
+              executor(resolve,reject);
+          }catch(err){
+              reject(err)
+          }
+        }
+
+        // 8.then
+        then(onFulfilled=()=>{},onRejected=()=>{}){
+            if(this.status===STATUS_FULFILLED){
+                onFulfilled(this.value)
+            }
+            if(this.status===STATUS_REJECTED){
+                onRejected(this.reason)
+            }
+            if(this.status===STATUS_PENDING){
+                this.onResolvedCallbacks.push(()=>onFulfilled(this.value));
+                this.onRejectedCallbacks.push(()=>{onRejected(this.reason)})
+            }
+        }
+
+      }
+      new MyPromise((resolve,reject)=>{
+          console.log('马上这些工作')
+          //resolve('hellow')
+          setTimeout(()=>{
+              if(true){
+                resolve('做完这些立马开始动工');
+              }else{
+                  reject('做不完,滚蛋');
+              }
+          },3000)
+          
+      }).then(res=>{
+          console.log('测试');
+          console.log(res)
+      },err=>{
+          console.log(err)
+      })
+      
+    </script>
+
+    <script>
+        
+    </script>
+  </body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    /// 数组方法  join reverse splice slice reduce find indexOf concat push insert 数组解构 [...[1,2,34],...[3,4,5]]; 
+    /// 字符串新增方法 startWith endWith split slice splice includes indexOf
+    /// 数字类型 parseInt parseFloat Math.random() Math.ceil Math.floor Number.isNaN Number.isFinite()
+    /// 三、对象
+    /// ES 对Object的升级 对象解构const {name,age}=obj 对象赋值 module.export={sayHi,fetchUserData} Object.assign Object.create
+    /// 对象的属性、对象的方法、
+    /// Object.assign() 方法注意事项：a.只能合并自身属性，不能合并继承属性 b.也不会合并不可枚举属性 c. 无法正确复制get\set
+    /// 四、函数
+    /// ()=>{} 没有自己的this 内部引用this是逐级向上查询
+    /// 改变this指向 foo.call(this,[]),foo.apply(this,name,age,hello)
+    /// 五、Symbol Set Map 
+    /// var arr=[1,2,4,4] arr=new Set(arr)结果  去重
+    /// Set方法 has clear delete forEach等方法 常用场景 arr转Set Set转arr String 转Set
+    /// Map 对象
+    /// Proxy 是什么，有什么作用？，用来改变JS默认的一些语言行为
+    //想把所有的key都变成函数，或者Promise,或者anything
+    //比如通过拦截对象的get/set方法，可以轻松地定制自己想要的key或者value
+    
+    // Promise是什么，有什么作用？处理异步回调 async await Promise方法
+    function myProxyObject(){
+      return new Proxy({},{
+        get(target,propKey,receiver){
+            return new Promise((resolve,reject)=>{
+              setTimeout(function(){
+                const random=Math.random();
+                console.log(random)
+                if(random>0.5){
+                  resolve(`${propKey},恭喜你成功了`)
+                }else{
+                  reject(`${propKey},抱歉，你失败了`);
+                }
+              },1000)
+            });
+        }
+      })
+    }
+    var obj1=new myProxyObject();
+    obj1.hahah.then(res=>{
+      console.log(res)
+    }).catch(err=>{
+      console.log(err)
+    })
+    obj1.www.then(res=>{
+      console.log(res)
+    }).catch(err=>{
+      console.log(err)
+    })
+
+    // 利用Promise手写一个异步记载图片的例子
+    // 关于图片的优化处理 压缩图片、iconfont、图片预加载、图片懒加载、插件、框架实现图片懒加载 各自举例
+    function loadAsyncImage(url){
+      return new Promise((resolve,reject)=>{
+        const image=new Image();
+      image.onload=function(){
+        resolve(image)
+      }
+      image.onerror=function(){
+        reject('图片加载失败')
+      }
+      image.src=url
+      document.body.appendChild(image);
+      })
+      
+    }
+    loadAsyncImage('https://tva1.sinaimg.cn/large/0081Kckwgy1gkjxfavheuj30bv053wid.jpg').then(res=>{
+      console.log(res)
+    });
+
+    // 模块化  Object.is() 判断两个变量是否相等 NaN null undefined 
+
+    // 两个变量的比较  基本变量 Number String Boolean null undefined Proxy
+    // 引用变量 Object Array Function 等
+    // Babel 的作用 转义
+    console.log(Object.is({name:'王菲'},{age:'李阳'}))
+    console.log(Object.is({name:'王菲'},{name:'王菲'}))
+    console.log({name:'王菲'}==={name:'王菲'})
+    console.log(NaN===NaN)
+    console.log(-0===+0)
+    console.log(Object.is(-0,+0))
+
+</script>
+</body>
+</html>

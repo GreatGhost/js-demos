@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <button onclick="updateData()">更新数据</button>
+
+    <script>
+        /// 思路：利用Proxy Reflect实现；设置proxy的get,set
+        function updateData(){
+            console.log(data)
+        data.name='搜安';
+        data.nums.push('王安石')
+        }
+        const data = {
+            name: "zhangsan",
+            age: 20,
+            info: {
+                address: "北京" // 需要深度监听
+            },
+            nums: [10, 20, 30]
+ };
+        const proxyData = new Proxy(data, {
+   get(target,key,receive){ 
+     // 只处理本身(非原型)的属性
+     const ownKeys = Reflect.ownKeys(target)
+     if(ownKeys.includes(key)){
+       console.log('get',key) // 监听
+     }
+     const result = Reflect.get(target,key,receive)
+     return result
+   },
+   set(target, key, val, reveive){
+     // 重复的数据，不处理
+     const oldVal = target[key]
+     console.log('方法三大')
+     if(val == oldVal){
+       return true
+     }
+     const result = Reflect.set(target, key, val,reveive)
+     console.log('set', key, val)
+     return result
+   },
+   deleteProperty(target, key){
+     const result = Reflect.deleteProperty(target,key)
+     console.log('delete property', key)
+     console.log('result',result)
+     return result
+   }
+ })
+
+  // 声明要响应式的对象,Proxy会自动代理
+ 
+
+        console.log(data)
+    </script>
+</body>
+</html>

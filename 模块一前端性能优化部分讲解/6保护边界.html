@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .button{
+            display: inline-block;
+            min-width: 120px;
+            padding:0 22px;
+            height: 62px;
+            line-height: 62px;
+            background-color: aqua;
+            border-radius: 8px;
+        }
+        .btn{
+            position: relative;
+            display: inline-block;
+            min-width: 120px;
+            padding:0 22px;
+            height: 62px;
+            line-height: 62px;
+            background-color: aqua;
+            border-radius: 8px;
+        }
+        .btn::before{
+            content:'';
+            position: absolute;
+            top:-20px;
+            left:-20px;
+            bottom: -20px;
+            right: -20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 保护便捷 -->
+    <div class="button">的法撒旦法萨芬大师傅撒fdsfasf</div>
+
+    <!-- 内容展示 -->
+    <!-- 数据为空 -->
+    <!-- 网络异常 -->
+
+    <!-- 图片 -->
+
+    <!-- 交互式设计优化 -->
+
+    <!-- 点击优化 -->
+
+    <!-- 点击区域扩大 -->
+    <div class="btn" onclick="tapBtn()">我是一个按钮</div>
+    <!-- 字体的优化 -->
+
+    
+    <script>
+        function tapBtn(){
+            console.log('我被点击了')
+        }
+    </script>
+</body>
+</html>

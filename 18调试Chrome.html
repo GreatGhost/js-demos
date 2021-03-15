@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        Array.prototype.binary_search = function (low, high, key) {
+            if (low > high) {
+                return -1;
+            }
+            // 注意： 这里是两者相加，如果是相减，明显就是错的，实践出真知~
+            var mid = parseInt((high + low)/2);
+            if (key < this[mid]) {
+                return this.binary_search(low, mid - 1, key);
+            } else if (key > this[mid]) {
+                return this.binary_search(mid + 1, high, key);
+            } else {
+
+                // return this[key]; // 最后返回key也是可以的。
+                return this[mid];
+            }
+        }
+        var arr = [15, 18, 25,45, 56, 59, 78, 83];
+        console.log(arr.binary_search(0, arr.length - 1, 56));
+        var a=[1,2,3,4]
+        var b=a;
+        //b=[2,3,4,5]
+        b.push(5);
+        console.log(a===b)
+        //a=[2,3,4,5]
+        console.log(a)
+    </script>
+</body>
+</html>
