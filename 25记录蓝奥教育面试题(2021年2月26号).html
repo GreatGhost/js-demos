@@ -1,40 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <!-- 面试题记录 -->
     <script>
-        
-        // var name='哈哈';
-        // function foo(){
-        //     var id=1234124;
-        //     function alterId(id){
-        //         alert(id);
-        //     }
-        //     alterId(id)
-        // }
-        // alert(name)
-        // alert(id);
-        // foo();
-        // alterId(id)
+      // var name='哈哈';
+      // function foo(){
+      //     var id=1234124;
+      //     function alterId(id){
+      //         alert(id);
+      //     }
+      //     alterId(id)
+      // }
+      // alert(name)
+      // alert(id);
+      // foo();
+      // alterId(id)
 
-        // 二、移动端开发需要注意些什么
-        // 三、冒泡排序 
-        // 四、webpack优化
-        // 五、三栏布局
-        // 六、class 
-        // 七、组件之间的通信
-        // 八、聊天实现 聊天内容的优化->虚拟列表实现
-        // 九、Vue构建多页面
-        var a;
-        console.log(a)
-        console.log(typeof undefined)
+      // 二、移动端开发需要注意些什么
+      // 三、冒泡排序
+      // 四、webpack优化
+      // 五、三栏布局
+      // 六、class
+      // 七、组件之间的通信
+      // 八、聊天实现 聊天内容的优化->虚拟列表实现
+      // 九、Vue构建多页面
+      // 十、
+      var a;
+      console.log(a);
+      console.log(typeof undefined);
+
+      // 算法解决
+
+      var data = [
+        {
+          id: "143124",
+          children: [
+            {
+              id: "abaccc",
+              children: [
+                {
+                  id: "afasdffff",
+                },
+              ],
+            },
+          ],
+        },
+
+        {
+          id: "fasd",
+          children: [
+            {
+              id: "fsd",
+            },
+            {id:'abc1113',
+                children:[
+                    {
+                        id:'88fadfads',
+                        children:[
+                            {
+                                id:'fasdfas'
+                            }
+                        ]
+                    }
+                ]
+        
+            }
+          ],
+        },
+      ];
+      // 逻辑思路
+      // 循环：
+      // 1.判断是否存在 children
+      // 递归的目的是什么？ 判断children是否存在这个id
+      // 函数的目的是什么？ 返回判断 是否命中
+      function findId(data, id) {
+        var resultId = "";
+
+        // 遍历children
+        function searchChildId(children, id) {
+
+          var isFlag = false;
+          if (!children || children.length === 0) return false;
+          for (let i = 0; i < children.length; i++) {
+            if (children[i].id === id) {
+                console.log('这里的children',children)
+              return true;
+            } else {
+              isFlag = searchChildId(children[i].children, id);
+            }
+          }
+          return isFlag;
+        }
+
+        // 循环处理数据
+        for (let i = 0; i < data.length; i++) {
+          let item = data[i];
+          if (searchChildId(item.children,id)) {
+            resultId = item.id;
+            break;
+          }
+        }
+        return resultId;
+      }
+      console.log(findId(data,'afasdffff'))
+
         
     </script>
-</body>
+  </body>
 </html>
