@@ -78,27 +78,46 @@
       // 微任务 Promise async await
       // 宏任务 setTimeout setInterval DOM操作 http回调
 
-      async function async1(){
-    console.log('async1 start'); // 3. 主线程打印
-    await async2(); // 4. 从右向左, 调用async2()函数执行
-    console.log('async1 end') // 8. 开始执行
-}
-async function async2(){
-    console.log('async2') // 5. 打印 (打印后回到第4步, 遇到await扔到任务队列等待) (标记微任务)
-}
-console.log('script start'); // 1. 主线程执行
-setTimeout(() => {
-    console.log('setTimeout') // 11. setTimeout/ setInterval都是宏任务, 在所有微任务执行完毕, 再按照顺序执行宏任务.
-}, 0);
-async1();  // 2. 主线程调用方法, 跳到async1函数执行
-new Promise((resolve) => { 
-    console.log('promise1'); // 6. 主线程继续, new Promise()马上执行里面代码
-    resolve(); // 7. 微任务进入队列等待. (主线程结束, 按照刚才微任务顺序, 先执行上面的微任务)
-}).then(() => {
-    console.log("promise2"); // 9. 执行
-}).then(() => {
-    console.log("promise2_then") // 10. 执行
-});
+      //       async function async1(){
+      //     console.log('async1 start'); // 3. 主线程打印
+      //     await async2(); // 4. 从右向左, 调用async2()函数执行
+      //     console.log('async1 end') // 8. 开始执行
+      // }
+      // async function async2(){
+      //     console.log('async2') // 5. 打印 (打印后回到第4步, 遇到await扔到任务队列等待) (标记微任务)
+      // }
+      // console.log('script start'); // 1. 主线程执行
+      // setTimeout(() => {
+      //     console.log('setTimeout') // 11. setTimeout/ setInterval都是宏任务, 在所有微任务执行完毕, 再按照顺序执行宏任务.
+      // }, 0);
+      // async1();  // 2. 主线程调用方法, 跳到async1函数执行
+      // new Promise((resolve) => {
+      //     console.log('promise1'); // 6. 主线程继续, new Promise()马上执行里面代码
+      //     resolve(); // 7. 微任务进入队列等待. (主线程结束, 按照刚才微任务顺序, 先执行上面的微任务)
+      // }).then(() => {
+      //     console.log("promise2"); // 9. 执行
+      // }).then(() => {
+      //     console.log("promise2_then") // 10. 执行
+      // });
+      new Promise((resolve, reject) => {
+        console.log("1");
+        setTimeout(function () {
+          return new Promise((resolve, reject) => {
+            console.log(2);
+            resolve(3);
+          }).then((res) => {
+            console.log(res);
+          });
+        }, 1000);
+        resolve(4);
+      }).then((res) => {
+        console.log(res);
+      });
+      setTimeout(function () {
+        console.log(5);
+      }, 1000);
+
+      console.log("打印结果", "1,4,2,3,5");
     </script>
   </body>
 </html>

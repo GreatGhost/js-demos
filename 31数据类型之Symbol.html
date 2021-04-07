@@ -1,110 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <script>
-        // 重点介绍Symbol
-        // 独一无二的Symbol
-        var sym1=Symbol('jie');
-        var sym2=Symbol('jie');
-        var sym3=Symbol.for('jie');
-        var sym4=Symbol.for('jie');
-        console.log(sym1)
-        console.log(sym1===sym2);
-        console.log(sym3===sym4);
-        // 2. 原始类型
-        // 不能被当做构造函数 所以不能使用new Symbol否则直接报错
-         console.log('symbol是原始类型',typeof Symbol('网')==='symbol');
-        // 3.不可枚举 Object.keys for in Object.getPropertyNames 都不能获取 
-        // 测试数据 sym5
-        var sym5={
-            name:'王菲',
-            age:18,
-            [Symbol('锋')]:'万给',
-            [Symbol('里')]:'里'
-        }
-        console.log(Object.getOwnPropertyNames(sym5))
-        console.log(Object.keys(sym5))
-        console.log(Object.getOwnPropertySymbols(sym5))
-        for(let key in sym5){
-            console.log(key);
-        }
-        // symbol的应用场景
+      // 重点介绍Symbol
+      // 独一无二的Symbol
+      var sym1 = Symbol("jie");
+      var sym2 = Symbol("jie");
+      var sym3 = Symbol.for("jie");
+      var sym4 = Symbol.for("jie");
+      console.log(sym1);
+      console.log(sym1 === sym2);
+      console.log(sym3 === sym4);
+      // 2. 原始类型
+      // 不能被当做构造函数 所以不能使用new Symbol否则直接报错
+      console.log("symbol是原始类型", typeof Symbol("网") === "symbol");
+      // 3.不可枚举 Object.keys for in Object.getPropertyNames 都不能获取
+      // 测试数据 sym5
+      var sym5 = {
+        name: "王菲",
+        age: 18,
+        [Symbol("锋")]: "万给",
+        [Symbol("里")]: "里",
+      };
+      console.log(Object.getOwnPropertyNames(sym5));
+      console.log(Object.keys(sym5));
+      console.log(Object.getOwnPropertySymbols(sym5));
+      for (let key in sym5) {
+        console.log(key);
+      }
+      // symbol的应用场景
 
-        // 1.应用 防止XSS 
-        // 2.应用symbol的不可枚举，模拟私有属性
-        // 3.防止属性污染
-        var sym6=Symbol('privateProp');
-        class Man{
-            constructor(){
-                this[sym6]='我是一个私有属性'
-            }
-            privateProp(){
-                return this[sym6]
-            }
-            setProp(val){
-                
-                this[sym6]=val
-            }
+      // 1.应用 防止XSS
+      // 2.应用symbol的不可枚举，模拟私有属性
+      // 3.防止属性污染
+      var sym6 = Symbol("privateProp");
+      class Man {
+        constructor() {
+          this[sym6] = "我是一个私有属性";
         }
-        var man=new Man();
-        console.log(man[sym6])
-        console.log(Object.keys(man));
-        man.setProp('水泊梁山');
-        console.log(man)
+        privateProp() {
+          return this[sym6];
+        }
+        setProp(val) {
+          this[sym6] = val;
+        }
+      }
+      var man = new Man();
+      console.log(man[sym6]);
+      console.log(Object.keys(man));
+      man.setProp("水泊梁山");
+      console.log(man);
 
-        // 手写call 方法
-        // 测试 myCall sayCall sayHi
-        function sayHi(){
+      // 手写call 方法
+      // 测试 myCall sayCall sayHi
+      function sayHi() {}
+      // 测试函数没有返回结果，打印的是undefined
 
-        }
-        // 测试函数没有返回结果，打印的是undefined
-        
-        console.log(sayHi());
+      console.log(sayHi());
 
-        // 逻辑思路
-        // 1.判断函数是否
-        Function.prototype.myCall=function(context){
-            if(typeof this!=='function'){
-                throw new Error('请在函数上调用')
-            }
-            // 这里的this就是函数本身
-            console.log('这里是上下文',context);
-            context=context|| window;
-            // 把fn
-            const fn=Symbol();
-            context[fn]=this;
-            console.log(this);
-            // 函数返回结果 没有就默认返回undefined
-            console.log('参数',...arguments);
-            // 去掉了this参数
-            const args=[...arguments].slice(1)
-            console.log(args)
-            const result=context[fn](...arguments);
-            delete context[fn];
-            return result;
+      // 逻辑思路
+      // 1.判断函数是否
+      Function.prototype.myCall = function (context) {
+        if (typeof this !== "function") {
+          throw new Error("请在函数上调用");
         }
-        function sayCall(a,b,c,d){
-            console.log('你好')
-        }
-        // (function(fn){
-        //     fn();
-        // })(Function.prototype.myCall)
-        sayCall.myCall(this,1,2,3,4,5);
-        
-        var obj={
-            name:'这里真好',
-            dance(){
-                console.log(this.name)
-            }
-        }
+        // 这里的this就是函数本身
+        console.log("这里是上下文", context);
+        context = context || window;
+        // 把fn
+        const fn = Symbol();
+        context[fn] = this;
+        console.log(this);
+        // 函数返回结果 没有就默认返回undefined
+        console.log("参数", ...arguments);
+        // 去掉了this参数
+        const args = [...arguments].slice(1);
+        console.log(args);
+        const result = context[fn](...arguments);
+        delete context[fn];
+        return result;
+      };
+      function sayCall(a, b, c, d) {
+        console.log("你好");
+        console.log(this);
+      }
+      // (function(fn){
+      //     fn();
+      // })(Function.prototype.myCall)
+      sayCall.myCall(this, 1, 2, 3, 4, 5);
 
-        obj.dance.myCall(obj,12,3,4,5)
+      var obj = {
+        name: "这里真好",
+        dance() {
+          console.log(this.name);
+        },
+      };
+
+      obj.dance.myCall(obj, 12, 3, 4, 5);
     </script>
-</body>
+  </body>
 </html>

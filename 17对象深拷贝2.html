@@ -1,198 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <script>
-        // [1,23,4]
-        var data=[1,2,345];
-        // 乞丐版 JSON.stringify() JSON.parse();
-        // 手写一个深拷贝
-        // 代码思路：
-        // 1.是否是引用类型 2.target是数组还是对象 3.递归实现对象返回
-        function clone(target){
-            if(typeof target!='object')return target;
-            let cloneTarget=Array.isArray(target)?[]:{}
-            for(let key in target){
-                let value=target[key];
-                cloneTarget[key]=clone(value);
-            }
-            return cloneTarget;
+      // [1,23,4]
+      var data = [1, 2, 345];
+      // 乞丐版 JSON.stringify() JSON.parse();
+      // 手写一个深拷贝
+      // 代码思路：
+      // 1.是否是引用类型 2.target是数组还是对象 3.递归实现对象返回
+      function clone(target) {
+        if (typeof target != "object") return target;
+        let cloneTarget = Array.isArray(target) ? [] : {};
+        for (let key in target) {
+          let value = target[key];
+          cloneTarget[key] = clone(value);
         }
+        return cloneTarget;
+      }
 
-        // 测试
+      // 测试
 
-        var data2={
-            name:'王菲',
-            text:undefined,
-            list:[
-                {id:'132432aa'},
-                {id:'fdsf11234124'}
-            ]
+      var data2 = {
+        name: "王菲",
+        text: undefined,
+        list: [{ id: "132432aa" }, { id: "fdsf11234124" }],
+      };
+      //data2.data2=data2; 这样就爆栈了
+      var data4 = data2;
+      var data3 = clone(data2);
+      console.log(data3);
+      console.log(data4 === data2);
+      console.log(data2 === data3);
+      // 性能问题:爆栈兼容处理
+      // 健壮性比较好
+      // 此处Map对象可以用 WeakMap代替 弱引用
+      // 弱引用会被垃圾回收机制自动收回
+      function deepMapClone(target, map = new Map()) {
+        if (typeof target === "object") {
+          var cloneTarget = Array.isArray(target) ? [] : {};
+          if (map.get(target)) {
+            return map.get(target);
+          }
+          // 此处精妙的地方 引用类型是存储一个指针
+          // 此处deepMapClone递归需要传值才行
+          map.set(target, cloneTarget);
+
+          for (let key in target) {
+            cloneTarget[key] = deepMapClone(target[key], map);
+          }
         }
-        //data2.data2=data2; 这样就爆栈了
-        var data4=data2;
-        var data3=clone(data2);
-        console.log(data3);
-        console.log(data4===data2)
-        console.log(data2===data3)
-        // 性能问题:爆栈兼容处理 
-        // 健壮性比较好
-        // 此处Map对象可以用 WeakMap代替 弱引用
-        // 弱引用会被垃圾回收机制自动收回
-        function deepMapClone(target,map=new Map()){
-            if(typeof target==='object'){
-                var cloneTarget=Array.isArray(target)?[]:{}
-                if(map.get(target)){
-                    return map.get(target);
-                }
-                // 此处精妙的地方 引用类型是存储一个指针
-                // 此处deepMapClone递归需要传值才行
-                map.set(target,cloneTarget);
-                
-                for(let key in target){
-                    cloneTarget[key]=deepMapClone(target[key],map);
-                }
+        return target;
+      }
 
-            }
-            return target;
-        }
+      // 测试deepMapClone 数据data5,data6
+      var data5 = {
+        name: "王建",
+        age: "发",
+        list: [1, 23, 45, 2],
+      };
+      // data5.data5=data5
+      var data6 = deepMapClone(data5);
+      console.log(data6);
 
-        // 测试deepMapClone 数据data5,data6
-        var data5={
-            name:'王建',
-            age:'发',
-            list:[1,23,45,2],
-            
-        }
-        // data5.data5=data5
-       var data6= deepMapClone(data5);
-       console.log(data6)
-
-       // 强引用
-      var data7={name:'王菲'}
-      var m1=new Map();
-      m1.set(data7,'秘密花园');
-      console.log(m1)
-      data7=null;
+      // 强引用
+      var data7 = { name: "王菲" };
+      var m1 = new Map();
+      m1.set(data7, "秘密花园");
+      console.log(m1);
+      data7 = null;
       console.log(m1);
       // 虽然手动释放data7，但是map对data7仍然存在强引用
-      
-      // 遍历效率 for while for in 
+
+      // 遍历效率 for while for in
 
       // 探讨 for while for in效率问题
       // 测试数据 data8
       // 测试for
 
-       var t1=performance.now();
-       var data8=[1,2,3,4,4,5,6]
-       for(let i=0;i<1000;i++){
-       }
-       var t2=performance.now();
-       console.log('for测试时间',t2-t1);
-      
-       // 测试 while 时间t3 t4
-       var t3=performance.now();
-       var whileIndex=0;
-       while(whileIndex<1000){
-           whileIndex++;
-       }
-       var t4=performance.now();
-       console.log('while测试时间',t4-t3);
+      var t1 = performance.now();
+      var data8 = [1, 2, 3, 4, 4, 5, 6];
+      for (let i = 0; i < 1000; i++) {}
+      var t2 = performance.now();
+      console.log("for测试时间", t2 - t1);
+
+      // 测试 while 时间t3 t4
+      var t3 = performance.now();
+      var whileIndex = 0;
+      while (whileIndex < 1000) {
+        whileIndex++;
+      }
+      var t4 = performance.now();
+      console.log("while测试时间", t4 - t3);
 
       // 迭代器是遍历的回调函数
 
       function forEach(array, iteratee) {
-    let index = -1;
+        let index = -1;
         const length = array.length;
         while (++index < length) {
-            iteratee(array[index], index);
+          iteratee(array[index], index);
         }
         return array;
-    }
+      }
 
-    forEach([11,23,34,5],function(val,index){
-        console.log(val)
-    })
-    
-    // 测试弱引用
-    // data9
-    const target = {
-    field1: 1,
-    field2: undefined,
-    field3: {
-        child: 'child'
-    },
-    field4: [2, 4, 8],
-    f: { f: { f: { f: { f: { f: { f: { f: { f: { f: { f: { f: {} } } } } } } } } } } },
-};
+      forEach([11, 23, 34, 5], function (val, index) {
+        console.log(val);
+      });
 
+      // 测试弱引用
+      // data9
+      const target = {
+        field1: 1,
+        field2: undefined,
+        field3: {
+          child: "child",
+        },
+        field4: [2, 4, 8],
+        f: {
+          f: {
+            f: {
+              f: { f: { f: { f: { f: { f: { f: { f: { f: {} } } } } } } } },
+            },
+          },
+        },
+      };
 
-    function cloneWeakMap(target, map = new WeakMap()) {
-    if (typeof target === 'object') {
-        const isArray = Array.isArray(target);
-        let cloneTarget = isArray ? [] : {};
+      function cloneWeakMap(target, map = new WeakMap()) {
+        if (typeof target === "object") {
+          const isArray = Array.isArray(target);
+          let cloneTarget = isArray ? [] : {};
 
-        if (map.get(target)) {
+          if (map.get(target)) {
             return map.get(target);
-        }
-        map.set(target, cloneTarget);
+          }
+          map.set(target, cloneTarget);
 
-        const keys = isArray ? undefined : Object.keys(target);
-        forEach(keys || target, (value, key) => {
+          const keys = isArray ? undefined : Object.keys(target);
+          forEach(keys || target, (value, key) => {
             // keys存在，表示target是对象
             // keys不存在，target是数组
             // 存在 将['name','sex']分支给key  优化处理 for(key in target)
             if (keys) {
-                key = value;
+              key = value;
             }
             cloneTarget[key] = cloneWeakMap(target[key], map);
-        });
+          });
 
-        return cloneTarget;
-    } else {
-        return target;
-    }
-}
-const testArr=(
-    function(){
-        var result=[];
-        var index=0;
-        while( index<100000){
-            result.push(index);
-            index++
+          return cloneTarget;
+        } else {
+          return target;
+        }
+      }
+      const testArr = (function () {
+        var result = [];
+        var index = 0;
+        while (index < 100000) {
+          result.push(index);
+          index++;
         }
         return result;
-    }
-)()
-const data10 = {
-    field1: 1,
-    field2: undefined,
-    field3: {
-        child: 'child'
-    },
-    field4: testArr,
+      })();
+      const data10 = {
+        field1: 1,
+        field2: undefined,
+        field3: {
+          child: "child",
+        },
+        field4: testArr,
 
-    f: { f: { f: { f: { f: { f: { f: { f: { f: { f: { f: { f: {} } } } } } } } } } } },
-};
+        f: {
+          f: {
+            f: {
+              f: { f: { f: { f: { f: { f: { f: { f: { f: {} } } } } } } } },
+            },
+          },
+        },
+      };
 
-data10.data10 = data10;
-console.log('采用map拷贝')
-console.time();
-const result = deepMapClone(data10);
-console.timeEnd();
+      data10.data10 = data10;
+      console.log("采用map拷贝");
+      console.time();
+      const result = deepMapClone(data10);
+      console.timeEnd();
 
-console.log('采用weakMap拷贝')
-console.time();
-const result2 = cloneWeakMap(data10);
-console.timeEnd();
+      console.log("采用weakMap拷贝");
+      console.time();
+      const result2 = cloneWeakMap(data10);
+      console.timeEnd();
 
-
-    // 深拷贝的库 lodash.   
+      // 深拷贝的库 lodash.
     </script>
-</body>
+  </body>
 </html>

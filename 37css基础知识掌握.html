@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #container{
+            width: 800px;
+            height: 800px;
+            background-color: green;
+        }
+        #demo{
+            width: 200px;
+            height:200px;
+            background-color: red;
+            
+        }
+        .debounce{
+            animation: widthAnimation 5s ease-in 1s 1 ;
+        }
+        @keyframes widthAnimation{
+            0%{
+               background-color: red;
+               width:200px;
+               height: 200px;
+           }
+           100%{
+              background-color: blue;
+              height: 300px;
+              width: 300px;
+           }
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="demo"></div>
+    </div>
+    
+    <button id="btn" onclick="addAnimation()">单击动画</button>
+    <script>
+        function addAnimation(){
+            var demo=document.getElementById('demo');
+            demo.className='debounce';
+        }
+        var btn=document.getElementById('btn');
+        btn.addEventListener('click',function(){
+            var demo=document.getElementById('demo');
+            demo.className='debounce';
+        });
+    </script>
+</body>
+</html>

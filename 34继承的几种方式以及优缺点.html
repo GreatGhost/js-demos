@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // prototype __proto__ constructor
+        //
+        var a={name:'f'};
+        console.log(a.constructor);
+        function Person(){
+
+        }
+        Person.prototype={
+            name:'王菲',
+            age:'333',
+            // constructor这里需要重新指定，否则指向Object
+            constructor:Person
+        }
+    </script>
+    <script>
+        // 构造继承
+        // 优点
+        // 1.创建子类时,可以向父类传参
+        // 2.可以实现多个继承 call多个父类对象
+        // 缺点
+        // 1.实例并不是父类的实例，只是子类的实例
+        // 2.只能继承父类的属性 父类实例方法，不能继承原型的属性和方法
+        // 3.无法实现函数复用，每个子类都有父类实例函数的副本
+
+        function Animal(name){
+            this.name=name;
+            this.colors=['红']
+            this.eat=function(){
+                console.log('我想吃')
+            }
+        }
+        Animal.prototype.sleep=function(){
+            console.log('我要睡觉');
+        }
+
+        // 子类
+        function Cat(name){
+            Animal.call(this,name)
+            this.sex='男';
+        }
+
+        var cat=new Cat('橘猫');
+        console.log(cat)
+        console.log(cat.name)
+        cat.eat();
+        console.log(cat instanceof Animal)
+        // cat.sleep(); 这里会报错，因为代码里prototype没有将 Animal传进来
+        
+    </script>
+
+    <script>
+        //实例继承
+        // 缺点： 不能实现多继承 不是子类的实例，是父类的实例
+        function Man(name){
+            this.name=name|| '王大和';
+        }
+        function Son(name){
+            var instance=new Man(name)
+            return instance;
+        }
+    </script>
+
+    <script>
+        // 组合继承 （原型链+构造函数继承） (常用)
+        // 优点：弥补了构造函数的缺陷，可以继承实例属性和方法，也可以继承原型属性和方法 2.可传参 3.可复用 
+        // 缺点： 调用连词构造函数，生成两次实例，损耗内存
+        function Rabbit(name,age){
+            Animal.call(this,name);
+            this.age=age;
+        }
+
+        Rabbit.prototype=Animal.prototype;
+        Rabbit.prototype.constructor=Rabbit;
+
+        var whiteRabbit=new Rabbit('小兔子','雌');
+        whiteRabbit.sleep();
+        whiteRabbit.eat();
+    </script>
+
+    <script>
+        // 原型式继承 利用Object.create 或者自己手写一个
+        function myOjbectCreate(obj){
+            var Func=function(){
+
+            }
+            Func.prototype=obj;
+            return new Func();
+        }
+        var obj1={name:'王菲',list:[
+            {id:'11111'},
+            {id:'22222'}
+        ]}
+        // Object.create();浅拷贝都不算 
+        var obj2=myOjbectCreate(obj1);
+        console.log('obj2是Object实例吗',obj2 instanceof Object)
+        console.log(obj1===obj2)
+        obj1.name='送检'
+        obj1.list[0]={id:'33333'};
+        console.log(obj1)
+        console.log(obj2);
+    </script>
+
+    <script>
+        // 寄生继承
+        // 只是 套了个壳子返回对象
+
+    </script>
+
+    <script>
+        // 寄生组合继承 解决了组合继承两次调用父类
+        function Tiger(name,sex,weight){
+            this.weight=weight;
+            this.sex=sex;
+            Animal.call(this,name)
+        }
+        (function(){
+            var anotherAnimal=Object.create(Animal.prototype);
+            anotherAnimal.constructor=Tiger;
+            Tiger.prototype=anotherAnimal;
+        })()
+        Tiger.prototype.shout=function(){
+            console.log('我是老虎叫叫叫')
+        }
+
+        var tiger=new Tiger('虎','雌','2000');
+        tiger.sleep();
+        tiger.shout();
+        console.log(tiger.name)
+    </script>
+    <script>
+        // 拷贝继承 遍历父类实例再逐个复制，效率太低了
+
+    </script>
+
+    <script>
+        // Class语法糖实现继承
+        class Father{
+            constructor(name){
+                this.name=name;
+            }
+            sayName(){
+                console.log(this.name)
+            }
+        }
+
+        class Child extends Father{
+            constructor(name,sex){
+                super(name);
+                this.sex=sex;
+            }
+            run(){
+                console.log(this.name,this.sex,'我在跑步')
+            }
+        }
+
+        var child=new Child('小米','男')
+        child.run();
+        child.sayName();
+    </script>
+</body>
+</html>

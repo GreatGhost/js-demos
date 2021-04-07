@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // try catch finally
+        // finally  try
+        function testTry(num){
+            try{    
+                if(num===0)throw new Error('你传的值有问题');
+                return num;
+            }catch(e){
+                console.log(e);
+            }finally{
+                console.log('a');
+                return num;
+            }
+        }
+        console.log(testTry(0))
+        console.log(testTry(5));
+        // promise实现串行
+
+        function one(){
+            console.log('1111')
+        }
+        function two(){
+            console.log('2222')
+        }
+
+        function three(){
+            console.log('3333')
+        }
+
+        function printFn(fn){
+            return new Promise((resolve,reject)=>{
+                fn();
+                resolve();
+            })
+        }
+        new Promise((resolve,reject)=>{}).then(printFn(one)).then(printFn(two)).then(printFn(three));
+
+        // 并行
+        function wait(value,time=1000){
+            return new Promise((resolve,reject)=>{
+                setTimeout(function(){
+                    resolve(value)
+                },time)
+            })
+        }
+
+        function print(value){
+            console.log(value)
+        }
+
+        const promises=[1,2,3,4,5].map((val)=>wait(val,val*1000));
+        // 并行
+        Promise.all(promises).then(res=>{
+            console.log(res);
+        })
+
+        // 串行
+        // 串行执行
+        let parallelPromises = promises.reduce(
+        (total, currentValue) => total.then(() => currentValue.then(print)),Promise.resolve())
+
+    </script>
+</body>
+</html>

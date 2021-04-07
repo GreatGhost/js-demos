@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 思路
+
+      // 1.一个数字有 几种组合方式
+      // 2.组合方式 乘起来
+
+      // 5
+      // 1 1 1 1 1
+      // 2 2 1
+      // 4 1 1 1 1
+      // 7 3 3 1
+      // 7 2 2 2 1
+      // 7 4 2 1
+      //
+      // 4 3 1
+      // 4 2 2
+      // 3 2 1
+      // 2  1 1
+
+      function multiplication(num) {
+        let num = 58;
+        while (num == 0) {}
+      }
+    </script>
+
+    <script>
+      // 递归加法
+      // 5+4+3+2+1
+
+      function sum(num) {
+        if (num === 1) return 1;
+        return num + sum(num - 1);
+      }
+      console.log(sum(10));
+
+      // 一道基础的JavaScript编程题
+      function foo(...args) {
+        console.log(args);
+        const getValue = () => {
+          if (args.length === 1) return args[0];
+          return args.pop() + getValue();
+        };
+        return {
+          getValue: getValue,
+        };
+      }
+      const f1 = foo(12, 3);
+
+      console.log(f1.getValue());
+
+      // 题目
+      // foo(1,2,3)
+      // foo(1)(2)(3)
+      // foo(1)(2,3)
+      // foo 返回的是一个fn
+
+      //
+      function bar(args) {}
+    </script>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const PENDING = "pending";
+      const FULFILLED = "fulfilled";
+      const REJECTED = "rejected";
+
+      // 手写Promise
+      class MyPromise {
+        constructor(executor) {
+          executor(this.resolve, this.reject);
+        }
+        // 存储的变量
+        status = PENDING;
+        reason = "";
+        value = null;
+        // 更改成功后的状态
+        resolve = (value) => {
+          if (this.status === PENDING) {
+            this.value = value;
+            this.status = FULFILLED;
+          }
+        };
+
+        // 失败后的状态
+        reject = (reason) => {
+          if (this.status === PENDING) {
+            this.reason = reason;
+            this.status = REJECTED;
+          }
+        };
+
+        // then回调函数
+        then(onFulfilled, onRejected) {}
+      }
+    </script>
+  </body>
+</html>
